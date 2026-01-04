@@ -1,4 +1,4 @@
-import { GoogleGenerativeAI } from "@google/genai";
+import * as GenAI from "@google/genai";
 import type { ServicePricing, BlogPost, SeoContentGraderResult, HoloscanResult, CompetitorSnapshotResult, AdCopyResult, BlogIdea, KeywordCluster, SocialPostResult, NicheProfileResult, ScannerInsight, SocialCampaign, DocumentLineItem, Task, Project, ContactSubmission, SiteDataContextType, User, NewBlogPost, NewArchivedDocument, ContentBriefResult, ClientProspectAnalysisResult, SolutionStep, TechnicalSeoAudit, RoiAnalysis, SocialPlatformAnalysis } from '../types';
 import { slugify, SITE_URL } from "../types";
 
@@ -239,7 +239,7 @@ export const analyzeClientProspect = async (
 // --- General Purpose & Admin Functions ---
 
 export const startStrategistChat = (agencyData: string) => {
-    const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API_KEY);
+    const genAI = new GenAI.GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API_KEY);
     const model = genAI.getGenerativeModel({
         model: "gemini-2.5-flash",
         systemInstruction: `You are "The Strategist," an AI business partner for the Prevaledge digital marketing agency. You have access to real-time agency data. Your role is to provide strategic insights, answer questions, and execute commands to help run the agency efficiently. You are professional, data-driven, and proactive.

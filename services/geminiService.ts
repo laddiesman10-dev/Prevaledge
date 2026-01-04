@@ -233,7 +233,54 @@ export const analyzeClientProspect = async (
 }
 
 
+
 // --- General Purpose & Admin Functions ---
+
+export async function generateMorningBriefing(tasks: Task[], projects: Project[], submissions: ContactSubmission[]): Promise<string> {
+    const model = 'gemini-2.5-flash';
+    const today = new Date().toLocaleDateString();
+
+    const overdueTasks = tasks.filter(t => new Date(t.dueDate) < new Date() && t.status !== 'Done');
+    const upcomingTasks = tasks.filter(t => {
+        const dueDate = new Date(t.dueDate);
+        const now = new Date();
+        const threeDaysFromNow = new Date();
+        threeDaysFromNow.setDate(now.getDate() + 3);
+        return dueDate >= now && dueDate <= threeDaysFromNow && t.status !== 'Done';
+    });
+
+    const newSubmissions = submissions.filter(s => {
+        const subDate = new Date(s.submittedAt);
+        const now = new Date();
+        const twentyFourHoursAgo = new Date(now.getTime() - (24 * 60 * 60 * 1000));
+        return subDate > twentyFourHoursAgo;
+    });
+
+    const prompt = `
+You are an expert executive assistant AI for a digital marketing agency. 
+Generate a concise, actionable morning briefing for the agency's manager for ${today}.
+Use markdown for clear formatting. Start with "### Morning Briefing".
+
+Here's the data:
+- Overdue Tasks: ${overdueTasks.length}
+- Upcoming Task Deadlines (Next 3 Days): ${upcomingTasks.length}
+- New Contact Submissions (Last 24h): ${newSubmissions.length}
+- Active Projects: ${projects.filter(p => p.status === 'In Progress').length}
+
+1.  **Priority Alert**: Summarize the most critical items. Mention the number of overdue tasks first if any exist. Highlight the number of new client inquiries.
+
+2.  **Upcoming Deadlines**: List up to 3 tasks with the nearest due dates. For each, list: "- [Task Title] for [Project Name] - Due: [Due Date]".
+
+3.  **New Inquiries**: Briefly mention the names of the people who submitted new contact forms in the last 24 hours.
+
+4.  **Project Pulse**: Give a one-sentence summary of the overall project status, mentioning the number of active projects.
+
+Keep the entire briefing under 150 words. Be professional, concise, and helpful.
+`;
+
+    const response = await generate(model, prompt);
+    return response.candidates[0].content.parts[0].text;
+}
 
 export async function analyzeInquiry(message: string): Promise<{ inquiryType: string }> {
   const model = 'gemini-2.5-flash';

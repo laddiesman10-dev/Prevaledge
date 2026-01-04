@@ -282,6 +282,53 @@ Keep the entire briefing under 150 words. Be professional, concise, and helpful.
     return response.candidates[0].content.parts[0].text;
 }
 
+
+export async function generateQuoteItemsFromPrompt(prompt: string, servicePricingData: ServicePricing[]): Promise<Omit<DocumentLineItem, 'id'>[]> {
+    const model = 'gemini-2.5-flash';
+    const systemPrompt = `You are a sales assistant for a digital marketing agency. Your task is to convert a user's request into a structured list of line items for a quote based on the services we offer.
+
+Today's Date: ${new Date().toLocaleDateString()}
+
+AVAILABLE SERVICES:
+---
+${servicePricingData.map(service => `
+- Service ID: ${service.id}
+- Name: ${service.name}
+- Category: ${service.category}
+- Description: ${service.description}
+- Price: $${service.price}
+- Price Type: ${service.price_type}
+- Features: ${service.features.join(', ')}
+`).join('')}
+---
+
+USER REQUEST: "${prompt}"
+
+Your task:
+1.  Analyze the user's request and match it to the available services.
+2.  If the user requests a service for a specific duration (e.g., "for 6 months"), set the 'quantity' for that line item accordingly. Default to 1 if not specified.
+3.  For one-time services, the quantity should always be 1.
+4.  Construct a JSON array of line items based on the "DocumentLineItem" schema provided below.
+5.  Do not include services the user did not ask for. If a request is ambiguous, use your best judgment to select the most relevant service.
+6.  The 'description' in the output should be the service name. The 'unit_price' should be the service price.
+
+JSON SCHEMA:
+[
+  {
+    "description": "string",
+    "quantity": "number",
+    "unit_price": "number"
+  }
+]
+
+Respond ONLY with the raw JSON array. Do not include any other text, markdown, or explanation.
+`;
+
+    const response = await generate(model, systemPrompt, { responseMimeType: 'application/json' });
+    const result = JSON.parse(response.candidates[0].content.parts[0].text);
+    return result as Omit<DocumentLineItem, 'id'>[];
+}
+
 export async function analyzeInquiry(message: string): Promise<{ inquiryType: string }> {
   const model = 'gemini-2.5-flash';
   const prompt = `Classify the following client inquiry into one of these categories: "Sales", "Support", "Partnership", "General Inquiry", "Spam".

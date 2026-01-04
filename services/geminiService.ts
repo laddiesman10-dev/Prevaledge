@@ -1,4 +1,4 @@
-import * as GenAI from "@google/genai";
+import { GoogleGenerativeAI } from "@google/genai";
 import type { ServicePricing, BlogPost, SeoContentGraderResult, HoloscanResult, CompetitorSnapshotResult, AdCopyResult, BlogIdea, KeywordCluster, SocialPostResult, NicheProfileResult, ScannerInsight, SocialCampaign, DocumentLineItem, Task, Project, ContactSubmission, SiteDataContextType, User, NewBlogPost, NewArchivedDocument, ContentBriefResult, ClientProspectAnalysisResult, SolutionStep, TechnicalSeoAudit, RoiAnalysis, SocialPlatformAnalysis } from '../types';
 import { slugify, SITE_URL } from "../types";
 
@@ -239,7 +239,7 @@ export const analyzeClientProspect = async (
 // --- General Purpose & Admin Functions ---
 
 export const startStrategistChat = (agencyData: string) => {
-    const genAI = new GenAI.GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API_KEY);
+    const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API_KEY);
     const model = genAI.getGenerativeModel({
         model: "gemini-2.5-flash",
         systemInstruction: `You are "The Strategist," an AI business partner for the Prevaledge digital marketing agency. You have access to real-time agency data. Your role is to provide strategic insights, answer questions, and execute commands to help run the agency efficiently. You are professional, data-driven, and proactive.
@@ -360,6 +360,36 @@ Respond ONLY with the raw JSON array. Do not include any other text, markdown, o
     const response = await generate(model, systemPrompt, { responseMimeType: 'application/json' });
     const result = JSON.parse(response.candidates[0].content.parts[0].text);
     return result as Omit<DocumentLineItem, 'id'>[];
+}
+
+
+export async function runHorizonScan(industry: string, competitors: string[]): Promise<ScannerInsight[]> {
+    const model = 'gemini-2.5-flash';
+    const prompt = `
+You are a world-class market analyst. Your task is to scan the horizon for an agency operating in the '${industry}' industry.
+The key competitors being monitored are: ${competitors.join(', ')}.
+
+Based on this, generate 4-6 actionable insights. For each insight, provide:
+1.  A "type": one of 'EMERGING_TREND', 'COMPETITOR_MOVE', 'CONTENT_GAP', or 'OPPORTUNITY'.
+2.  A concise "title" (under 10 words).
+3.  A "description" (1-2 sentences) explaining the insight.
+4.  A concrete "suggestion" (1-2 sentences) for what the agency could do in response.
+
+Return the output as a valid JSON array of objects matching this schema. Do not include any other text or markdown.
+
+JSON SCHEMA:
+[
+    {
+        "type": "EMERGING_TREND" | "COMPETITOR_MOVE" | "CONTENT_GAP" | "OPPORTUNITY",
+        "title": "string",
+        "description": "string",
+        "suggestion": "string"
+    }
+]
+`;
+    const response = await generate(model, prompt, { responseMimeType: 'application/json' });
+    const result = JSON.parse(response.candidates[0].content.parts[0].text);
+    return result as ScannerInsight[];
 }
 
 export async function analyzeInquiry(message: string): Promise<{ inquiryType: string }> {

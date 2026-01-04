@@ -2,7 +2,7 @@ import { GoogleGenAI } from "@google/genai";
 import type { ServicePricing, BlogPost, SeoContentGraderResult, HoloscanResult, CompetitorSnapshotResult, AdCopyResult, BlogIdea, KeywordCluster, SocialPostResult, NicheProfileResult, ScannerInsight, SocialCampaign, DocumentLineItem, Task, Project, ContactSubmission, SiteDataContextType, User, NewBlogPost, NewArchivedDocument, ContentBriefResult, ClientProspectAnalysisResult, SolutionStep, TechnicalSeoAudit, RoiAnalysis, SocialPlatformAnalysis } from '../types';
 import { slugify, SITE_URL } from "../types";
 
-const API_URL = 'http://localhost:3001/api/genai';
+const API_URL = '/api/genai';
 
 async function generate(model: string, prompt: any, config?: any): Promise<any> {
   const response = await fetch(API_URL, {

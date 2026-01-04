@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <style>
+    path, circle {
+      stroke: #3B82F6; /* Default blue for light mode */
+    }
+    @media (prefers-color-scheme: dark) {
+      path, circle {
+        stroke: #60A5FA; /* Lighter blue for dark mode */
+      }
+    }
+  </style>
+  <path d="M12 2a3 3 0 0 0-3 3v1c0 1.1.9 2 2 2h2a2 2 0 0 0 2-2V5a3 3 0 0 0-3-3Z" />
+  <path d="M12 11.5A2.5 2.5 0 0 1 9.5 9" />
+  <path d="M14.5 9a2.5 2.5 0 0 1-2.5 2.5" />
+  <path d="M12 11.5v1.5" />
+  <path d="M12 18.5a2.5 2.5 0 0 1-2.5-2.5" />
+  <path d="M9.5 16a2.5 2.5 0 0 0 2.5 2.5" />
+  <path d="M12 16v-1.5" />
+  <path d="M5.5 11.5a2.5 2.5 0 0 1-2.5-2.5" />
+  <path d="M3 9a2.5 2.5 0 0 0 2.5 2.5" />
+  <path d="M3 14a2.5 2.5 0 0 0 2.5 2.5" />
+  <path d="M5.5 16.5a2.5 2.5 0 0 1-2.5-2.5" />
+  <path d="M21 9a2.5 2.5 0 0 0-2.5 2.5" />
+  <path d="M18.5 11.5a2.5 2.5 0 0 1-2.5-2.5" />
+  <path d="M18.5 14a2.5 2.5 0 0 1 2.5 2.5" />
+  <path d="M21 16.5a2.5 2.5 0 0 0-2.5-2.5" />
+  <path d="M12 22a3 3 0 0 1-3-3v-1c0-1.1.9-2 2-2h2a2 2 0 0 1 2 2v1a3 3 0 0 1-3 3Z" />
+</svg>

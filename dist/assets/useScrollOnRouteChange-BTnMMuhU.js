@@ -1,0 +1,1 @@
+import{r}from"./index-BJm5hHGn.js";const l=o=>{r.useEffect(()=>{const e=o.split("#")[1];if(e){const s=setTimeout(()=>{const t=document.getElementById(e);t?t.scrollIntoView({behavior:"smooth"}):o==="/"&&window.scrollTo({top:0,behavior:"smooth"})},100);return()=>clearTimeout(s)}else window.scrollTo({top:0,behavior:"smooth"})},[o])};export{l as u};

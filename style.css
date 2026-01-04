@@ -1,0 +1,387 @@
+/* --- NEW "AURORA UI" SYSTEM --- */
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom scrollbar for a more futuristic feel */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #0a0a0a;
+}
+::-webkit-scrollbar-thumb {
+  background: #1d4ed8;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #2563eb;
+}
+.horizontal-scrollbar::-webkit-scrollbar {
+  height: 4px;
+}
+.horizontal-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #2563eb;
+  border-radius: 2px;
+}
+
+
+/* Base Body Styles */
+body {
+  background-color: #030712; /* Richer, darker navy */
+  color: #e2e8f0; /* slate-200 */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* --- PRELOADER STYLES --- */
+#preloader {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background-color: #030712;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.5s ease-out;
+}
+#preloader.loaded {
+  opacity: 0;
+  pointer-events: none;
+}
+#preloader svg {
+  width: 80px;
+  height: 80px;
+  color: #60a5fa; /* blue-400 */
+  animation: preloader-pulse 2s infinite ease-in-out;
+}
+#preloader p {
+  margin-top: 1rem;
+  font-family: monospace;
+  color: #94a3b8; /* slate-400 */
+}
+@keyframes preloader-pulse {
+  0%, 100% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 5px rgba(96, 165, 250, 0.5));
+  }
+  50% {
+    transform: scale(1.05);
+    filter: drop-shadow(0 0 15px rgba(96, 165, 250, 0.8));
+  }
+}
+
+
+/* New Background utilities */
+.bg-radial-gradient-top {
+  background: radial-gradient(ellipse at 50% 0%, rgba(59, 130, 246, 0.15), transparent 70%);
+}
+.bg-grid-pattern {
+  background-image: linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 2rem 2rem;
+}
+
+/* Interactive Card Glow Effect */
+.interactive-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 0.75rem; /* 12px */
+  padding: 1px; /* border width */
+  background: radial-gradient(400px circle at var(--mouse-x) var(--mouse-y), rgba(59, 130, 246, 0.4), transparent 80%);
+  -webkit-mask: 
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+.interactive-card:hover::before {
+  opacity: 1;
+}
+
+/* Added for futuristic input glow */
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 8px rgba(59, 130, 246, 0.6), 0 0 12px rgba(59, 130, 246, 0.4);
+    border-color: rgba(96, 165, 250, 0.9);
+  }
+  50% {
+    box-shadow: 0 0 16px rgba(59, 130, 246, 0.9), 0 0 24px rgba(59, 130, 246, 0.6);
+    border-color: rgba(147, 197, 253, 1);
+  }
+}
+.form-input-futuristic:focus {
+  outline: none;
+  animation: pulse-glow 2s infinite ease-in-out;
+}
+
+/* Added for News Ticker */
+@keyframes marquee {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-50%); }
+}
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+.animate-marquee {
+  animation: marquee 60s linear infinite;
+}
+.animate-pulse-dot {
+  animation: pulse-dot 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Added for AI Generator streaming cursor */
+@keyframes blinking-cursor {
+  0%, 100% { border-color: transparent; }
+  50% { border-color: #3b82f6; /* blue-500 */ }
+}
+.blinking-cursor {
+  display: inline-block;
+  width: 0;
+  height: 1.2em;
+  margin-left: 4px;
+  border-right: 3px solid #3b82f6;
+  animation: blinking-cursor 1s step-end infinite;
+  vertical-align: sub;
+}
+
+/* Updated for a smoother, modern fade-in effect */
+@keyframes content-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+    filter: blur(5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+.animate-content-fade-in {
+  animation: content-fade-in 1s ease-out forwards;
+}
+
+/* Updated for a more dynamic hero headline animation */
+@keyframes fade-in-up-word {
+  from {
+    opacity: 0;
+    transform: translateY(30px) skewY(5deg);
+    filter: blur(5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) skewY(0deg);
+    filter: blur(0);
+  }
+}
+.animate-fade-in-up-word {
+  animation: fade-in-up-word 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  opacity: 0; /* Set initial state for animation */
+}
+
+/* Utility animation for fading in components */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-fade-in {
+  animation: fade-in 0.5s ease-out forwards;
+}
+
+/* Modal entry animation */
+@keyframes modal-entry {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+.animate-modal-entry {
+    animation: modal-entry 0.5s ease-out forwards;
+}
+
+/* Social Proof Toaster animations */
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes toast-out {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(20px) scale(0.9);
+  }
+}
+
+.animate-toast-in {
+  animation: toast-in 0.5s cubic-bezier(0.21, 1.02, 0.73, 1) forwards;
+}
+
+.animate-toast-out {
+  animation: toast-out 0.5s cubic-bezier(0.26, 0.01, 0.79, -0.01) forwards;
+}
+
+/* For the animated aurora background */
+@keyframes aurora-glow {
+  0% { transform: translate(-50%, -50%) scale(1); opacity: 0.3; }
+  50% { transform: translate(-50%, -50%) scale(1.5); opacity: 0.5; }
+  100% { transform: translate(-50%, -50%) scale(1); opacity: 0.3; }
+}
+.aurora-bg {
+  position: relative;
+  overflow: hidden;
+}
+.aurora-bg::before, .aurora-bg::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  z-index: 0;
+}
+.aurora-bg::before {
+  width: 300px;
+  height: 300px;
+  background-color: rgba(59, 130, 246, 0.3); /* blue */
+  top: 30%;
+  left: 30%;
+  animation: aurora-glow 10s infinite ease-in-out;
+}
+.aurora-bg::after {
+  width: 250px;
+  height: 250px;
+  background-color: rgba(139, 92, 246, 0.2); /* violet */
+  top: 70%;
+  left: 70%;
+  animation: aurora-glow 12s infinite ease-in-out reverse;
+}
+
+/* Deeper aurora layer for enhanced effect */
+.aurora-bg-deep::before {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(100px);
+  z-index: 0;
+  width: 400px;
+  height: 400px;
+  background-color: rgba(20, 83, 45, 0.15); /* A deep green for contrast */
+  top: 50%;
+  left: 50%;
+  animation: aurora-glow 15s infinite ease-in-out;
+}
+
+/* Logo Breathing Animation */
+@keyframes logo-breathing {
+  0%, 100% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 8px rgba(59, 130, 246, 0.6));
+  }
+  50% {
+    transform: scale(1.03);
+    filter: drop-shadow(0 0 20px rgba(96, 165, 250, 0.9));
+  }
+}
+.animate-logo-breathing {
+  animation: logo-breathing 4s infinite ease-in-out;
+}
+
+/* Holoscan Visualizer Animation */
+@keyframes shine {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(900px); }
+}
+.animate-shine {
+  animation: shine 2s linear infinite;
+}
+
+
+/* --- ENHANCED PRINT STYLES --- */
+@media print {
+  /* Hide everything on the page by default */
+  body * {
+    visibility: hidden;
+  }
+  
+  /* Make only the printable area and its children visible */
+  .printable-area, .printable-area * {
+    visibility: visible;
+  }
+  
+  /* Position the printable area to take up the whole page */
+  .printable-area {
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 1.5rem !important;
+    border: none !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    background-color: #fff !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+
+  /* Hide elements specifically marked as no-print */
+  .no-print {
+    display: none !important;
+  }
+  
+  /* Ensure backgrounds and colors are preserved */
+  .print-colors {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+
+  /* Layout adjustments for print */
+  .printable-area .print-grid-container {
+      display: block !important;
+  }
+  /* General card layout for printing */
+  .printable-area .print-grid-container .interactive-card {
+      width: 100% !important;
+      page-break-inside: avoid !important;
+      margin-bottom: 1.5rem !important;
+  }
+  
+  /* Table styles for print */
+  .printable-area table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+  }
+
+  .printable-area table thead tr {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+}

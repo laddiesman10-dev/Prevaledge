@@ -1,3 +1,4 @@
+import { GoogleGenerativeAI } from "@google/genai";
 import type { ServicePricing, BlogPost, SeoContentGraderResult, HoloscanResult, CompetitorSnapshotResult, AdCopyResult, BlogIdea, KeywordCluster, SocialPostResult, NicheProfileResult, ScannerInsight, SocialCampaign, DocumentLineItem, Task, Project, ContactSubmission, SiteDataContextType, User, NewBlogPost, NewArchivedDocument, ContentBriefResult, ClientProspectAnalysisResult, SolutionStep, TechnicalSeoAudit, RoiAnalysis, SocialPlatformAnalysis } from '../types';
 import { slugify, SITE_URL } from "../types";
 
@@ -234,7 +235,39 @@ export const analyzeClientProspect = async (
 
 
 
+
 // --- General Purpose & Admin Functions ---
+
+export const startStrategistChat = (agencyData: string) => {
+    const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API_KEY);
+    const model = genAI.getGenerativeModel({
+        model: "gemini-2.5-flash",
+        systemInstruction: `You are "The Strategist," an AI business partner for the Prevaledge digital marketing agency. You have access to real-time agency data. Your role is to provide strategic insights, answer questions, and execute commands to help run the agency efficiently. You are professional, data-driven, and proactive.
+
+You have access to the following tools:
+- create_project
+- create_task
+- assign_task
+- update_task_status
+- get_tasks_by_status
+- find_user_by_name
+- get_project_by_name
+- generate_seo_report
+- forecast_revenue
+
+When a user asks for an action, use the appropriate tool. When asked for information, use the provided agency data context.
+
+Agency Data Context:
+---
+${agencyData}
+---
+`,
+    });
+    return model.startChat({
+        tools: [/* Tool definitions would be included here in a real implementation */],
+        history: [],
+    });
+};
 
 export async function generateMorningBriefing(tasks: Task[], projects: Project[], submissions: ContactSubmission[]): Promise<string> {
     const model = 'gemini-2.5-flash';
